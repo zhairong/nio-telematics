@@ -1,0 +1,13 @@
+{
+  "domain": "nio_open",
+  "name": "NIO Open Platform",
+  "codeowners": ["@rong-zhai_nioer"],
+  "config_flow": true,
+  "dependencies": ["application_credentials"],
+  "documentation": "https://github.com/rong-zhai_nioer/nio-telematics",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/rong-zhai_nioer/nio-telematics/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

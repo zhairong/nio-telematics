@@ -14,7 +14,7 @@ A HACS custom repository (type: Integration, repo `nio-telematics`) that shows t
 - Standard HA OAuth2 (`application_credentials` + `config_entry_oauth2_flow`), redirect_uri `https://my.home-assistant.io/redirect/oauth` (fallback `http://192.168.31.211:8123/auth/external/callback`); both must be registered on the NIO client.
 - client_id/secret entered once in HA UI (never committed); VIN entered in config flow.
 - Read-only. Out of scope: ADAS snapshot/event downloads, vehicle control.
-- One `DataUpdateCoordinator`, default poll 5 min (options-configurable), concurrent endpoint calls, per-endpoint failure isolation, backoff on 429.
+- One `DataUpdateCoordinator`, default poll 1 min (options-configurable), concurrent endpoint calls, per-endpoint failure isolation, backoff on 429.
 - `*/changes` endpoints: query `[now-window, now]`, take the last sample as current value; keep previous value when window is empty.
 
 ## Layout
