@@ -50,22 +50,25 @@ class NioApi:
         except Exception as err:  # noqa: BLE001 - normalised below
             status = getattr(err, "status", None)
             if status in (401, 403):
-                raise NioAuthError(f"HTTP {status} from NIO") from err
-            raise NioApiError(f"Request to {endpoint} failed: {err}") from err
+                raise NioAuthError(f"HTTP {status} from NIO") from None
+            raise NioApiError(f"Request to {endpoint} failed") from None
 
         if response.status in (401, 403):
             raise NioAuthError(f"HTTP {response.status} from NIO")
         if response.status >= 400:
             raise NioApiError(f"HTTP {response.status} from {endpoint}")
 
-        payload = await response.json(content_type=None)
+        try:
+            payload = await response.json(content_type=None)
+        except Exception:  # noqa: BLE001 - response details may contain private data
+            raise NioApiError(f"Invalid response from {endpoint}") from None
         if not isinstance(payload, dict):
             raise NioApiError(f"Unexpected payload from {endpoint}")
         code = payload.get("result_code")
         if code != "success":
-            if code in AUTH_RESULT_CODES:
-                raise NioAuthError(f"{endpoint}: {code}")
-            raise NioApiError(f"{endpoint}: {code}")
+            if isinstance(code, str) and code in AUTH_RESULT_CODES:
+                raise NioAuthError(f"NIO denied access to {endpoint}")
+            raise NioApiError(f"NIO rejected {endpoint} request")
 
         data = payload.get("data")
         if isinstance(data, list):

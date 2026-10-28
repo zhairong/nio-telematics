@@ -84,9 +84,9 @@ class NioOAuth2Implementation(LocalOAuth2ImplementationWithPkce):
             if all(token.get(f) for f in TOKEN_FIELDS):
                 return dict(token)
             raise self._error(OAuth2TokenRequestError, status, "Incomplete token")
-        if code in REAUTH_CODES or 400 <= status < 500:
+        if (isinstance(code, str) and code in REAUTH_CODES) or 400 <= status < 500:
             raise self._error(
-                OAuth2TokenRequestReauthError, status, f"NIO rejected token request ({code})"
+                OAuth2TokenRequestReauthError, status, "NIO rejected token request"
             )
         raise self._error(OAuth2TokenRequestError, status, "Invalid token response")
 

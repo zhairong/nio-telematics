@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -14,6 +15,7 @@ from custom_components.nio_open.const import DOMAIN, ENDPOINTS
 
 VIN = "SQETEST000123456"
 
+# Vehicle identifiers and coordinates below are synthetic test data.
 DATA = {
     "vehicle_status": {"speed": 0, "mileage": 12345.6, "vehl_state": "PARKED_VEHICLE"},
     "soc_status": {"soc": 76.5, "remaining_range": 310},
@@ -23,7 +25,7 @@ DATA = {
         "vehicle_lock_status": "FULLY_LOCKED",
         "charge_port_status": [{"charge_port_sn": 1, "ajar_status": "AJAR_CLOSED"}],
     },
-    "position_status": {"posng_valid_type": "VALID", "latitude": 52.5, "longitude": 13.4},
+    "position_status": {"posng_valid_type": "VALID", "latitude": 0.0, "longitude": 0.0},
     "window_status": {"window_positions": {"win_frnt_le_posn": 20}},
 }
 
@@ -63,7 +65,7 @@ async def test_entities(hass: HomeAssistant) -> None:
     assert hass.states.get("binary_sensor.nio_123456_vehicle_lock").state == "off"
     assert hass.states.get("binary_sensor.nio_123456_charge_port").state == "off"
     tracker = hass.states.get("device_tracker.nio_123456_location")
-    assert tracker.attributes["latitude"] == 52.5
+    assert tracker.attributes["latitude"] == 0.0
 
 
 async def test_tracker_ignores_invalid_position(hass: HomeAssistant) -> None:
@@ -86,6 +88,28 @@ async def test_partial_failure_keeps_setup(hass: HomeAssistant) -> None:
     assert entry.state is ConfigEntryState.LOADED
     assert hass.states.get("sensor.nio_123456_battery").state == "76.5"
     assert hass.states.get("binary_sensor.nio_123456_front_left_door").state == "unavailable"
+
+
+@pytest.mark.parametrize("error_type", [NioApiError, NioAuthError])
+async def test_fetch_failures_do_not_log_sensitive_details(
+    hass: HomeAssistant, caplog: pytest.LogCaptureFixture, error_type
+) -> None:
+    sensitive = "VIN_SYNTHETIC token=SYNTHETIC_SECRET user@example.invalid 192.0.2.1"
+
+    async def fetch(name):
+        if name == "door_status":
+            raise error_type(sensitive)
+        return DATA.get(name)
+
+    caplog.set_level(logging.DEBUG)
+    entry = await setup(hass, fetch)
+    expected = (
+        ConfigEntryState.SETUP_ERROR
+        if error_type is NioAuthError
+        else ConfigEntryState.LOADED
+    )
+    assert entry.state is expected
+    assert sensitive not in caplog.text
 
 
 async def test_all_failures_retry_setup(hass: HomeAssistant) -> None:

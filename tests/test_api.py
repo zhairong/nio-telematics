@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import traceback
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -46,7 +47,10 @@ async def test_fetch_dict_and_url():
     api = NioApi(session, "VIN123")
     assert await api.fetch("vehicle_status") == {"soc": 55, "speed": 0}
     url = session.async_request.await_args.args[1]
+    assert session.async_request.await_args.args[0] == "get"
     assert url.endswith("/vehicles/VIN123/vehicle_status/latest")
+    assert "?" not in url
+    assert "#" not in url
 
 
 async def test_fetch_list_is_merged():
@@ -78,3 +82,35 @@ async def test_auth_errors(payload, status):
     session = make_session(payload, status)
     with pytest.raises(NioAuthError):
         await NioApi(session, "V").fetch("soc_status")
+
+
+@pytest.mark.parametrize("status", [None, 401, 403])
+async def test_request_errors_do_not_expose_sensitive_details(status):
+    sensitive = "VIN_SYNTHETIC token=SYNTHETIC_SECRET user@example.invalid 192.0.2.1"
+    error = RuntimeError(sensitive)
+    error.status = status
+    session = make_session({})
+    session.async_request.side_effect = error
+    error_type = NioAuthError if status in (401, 403) else NioApiError
+    with pytest.raises(error_type) as exc:
+        await NioApi(session, "V").fetch("soc_status")
+    assert sensitive not in "".join(traceback.format_exception(exc.value))
+
+
+async def test_invalid_json_does_not_expose_response_or_url():
+    sensitive = "VIN_SYNTHETIC latitude=12.345 token=SYNTHETIC_SECRET"
+    session = make_session({})
+    session.async_request.return_value.json.side_effect = ValueError(sensitive)
+    with pytest.raises(NioApiError) as exc:
+        await NioApi(session, "V").fetch("soc_status")
+    assert sensitive not in "".join(traceback.format_exception(exc.value))
+
+
+@pytest.mark.parametrize(
+    "code", ["token=SYNTHETIC_SECRET", {"token": "SYNTHETIC_SECRET"}]
+)
+async def test_unknown_result_code_is_not_exposed(code):
+    session = make_session({"result_code": code})
+    with pytest.raises(NioApiError) as exc:
+        await NioApi(session, "V").fetch("soc_status")
+    assert "SYNTHETIC_SECRET" not in "".join(traceback.format_exception(exc.value))

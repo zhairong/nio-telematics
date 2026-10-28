@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import base64
+import traceback
 
 import pytest
 from homeassistant.core import HomeAssistant
@@ -58,6 +59,18 @@ async def test_invalid_grant_requires_reauth(
     aioclient_mock.post(TOKEN_URL, json={"result_code": "invalid_grant"})
     with pytest.raises(OAuth2TokenRequestReauthError):
         await impl(hass)._token_request({"grant_type": "refresh_token"})
+
+
+@pytest.mark.parametrize(
+    "code", ["token=SYNTHETIC_SECRET", {"token": "SYNTHETIC_SECRET"}]
+)
+async def test_rejected_token_does_not_expose_result_code(
+    hass: HomeAssistant, aioclient_mock: AiohttpClientMocker, code
+) -> None:
+    aioclient_mock.post(TOKEN_URL, status=400, json={"result_code": code})
+    with pytest.raises(OAuth2TokenRequestReauthError) as exc:
+        await impl(hass)._token_request({"grant_type": "refresh_token"})
+    assert "SYNTHETIC_SECRET" not in "".join(traceback.format_exception(exc.value))
 
 
 async def test_server_error_is_transient(

@@ -46,12 +46,12 @@ class NioCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
         failures = 0
         for name, result in zip(names, results, strict=True):
             if isinstance(result, NioAuthError):
-                raise ConfigEntryAuthFailed(str(result)) from result
+                raise ConfigEntryAuthFailed("NIO authentication failed") from None
             if isinstance(result, BaseException):
                 if not isinstance(result, Exception):
                     raise result
                 failures += 1
-                _LOGGER.debug("Fetching %s failed: %s", name, result)
+                _LOGGER.debug("Fetching %s failed", name)
             elif result:
                 # Change records are sparse, so keep fields the new record lacks.
                 data[name] = {**data.get(name, {}), **result}
