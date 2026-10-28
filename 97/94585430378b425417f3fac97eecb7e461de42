@@ -1,0 +1,47 @@
+custom_components/nio_open/application_credentials.py
+  s_700163908ffdd3::t_3dd5ab14513f15 87,89
+custom_components/nio_open/manifest.json
+  s_700163908ffdd3::t_de26305470d0fa 4,7,10
+README.md
+  s_700163908ffdd3::t_1f1ce20b7a069b 15-24,29
+  s_700163908ffdd3::t_608a008ffeb0b2 37-38,40-41
+  s_700163908ffdd3::t_f6888bacd1af2b 3-5
+custom_components/nio_open/coordinator.py
+  s_700163908ffdd3::t_a8fc0ec96d328d 49
+  s_700163908ffdd3::t_19be2d4fbee023 54
+tests/test_entities.py
+  s_700163908ffdd3::t_6d1678fd147d49 18
+  s_700163908ffdd3::t_65cb43f7b48520 93-114
+  s_700163908ffdd3::t_a6ae3cb2744b37 5
+  s_700163908ffdd3::t_233f0bda537e3a 68
+  s_700163908ffdd3::t_d7ed1954ccb181 28
+tests/test_oauth.py
+  s_700163908ffdd3::t_cc12e8d1746cdf 6
+  s_700163908ffdd3::t_290cd92d1f73e7 64-75
+hacs.json
+  s_700163908ffdd3::t_4108b4715eaa09 2
+custom_components/nio_open/api.py
+  s_700163908ffdd3::t_872b12911853fb 61-64
+  s_700163908ffdd3::t_384fb7101a2a06 69-71
+  s_700163908ffdd3::t_5d9d30f47b462d 53-54
+tests/test_api.py
+  s_700163908ffdd3::t_46aadf77324238 50,52-53
+  s_700163908ffdd3::t_bb354548deed5b 85-116
+  s_700163908ffdd3::t_5cedca1d284259 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "9794585430378b425417f3fac97eecb7e461de42",
+  "prompts": {},
+  "sessions": {
+    "s_700163908ffdd3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "db351d62-75e2-4e5a-a6f2-3b3a1c21aab7",
+        "model": "gpt-6.1-sol-fast"
+      },
+      "human_author": "rong.zhai <rong.zhai@nio.io>"
+    }
+  }
+}
