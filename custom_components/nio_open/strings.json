@@ -1,0 +1,36 @@
+{
+  "config": {
+    "step": {
+      "pick_implementation": {
+        "title": "Pick authentication method"
+      },
+      "vin": {
+        "title": "Vehicle",
+        "description": "Enter the VIN of the NIO vehicle to monitor.",
+        "data": { "vin": "VIN" }
+      },
+      "reauth_confirm": {
+        "title": "Reauthenticate NIO",
+        "description": "NIO authorization expired. Authorize again to continue."
+      }
+    },
+    "abort": {
+      "already_configured": "This vehicle is already configured.",
+      "authorize_url_timeout": "Timeout generating authorize URL.",
+      "missing_configuration": "Add NIO application credentials (client ID/secret) first.",
+      "no_url_available": "No URL available. Check the Home Assistant URL settings.",
+      "oauth_error": "Received invalid token data.",
+      "oauth_failed": "Error while obtaining access token.",
+      "oauth_timeout": "Timeout resolving OAuth token.",
+      "oauth_unauthorized": "OAuth authorization error while obtaining access token.",
+      "reauth_successful": "Reauthentication was successful.",
+      "user_rejected_authorize": "Account linking rejected."
+    },
+    "create_entry": {
+      "default": "Successfully authenticated."
+    }
+  },
+  "application_credentials": {
+    "description": "Use the client ID and secret from the NIO Open Platform (open-eu.nio.com)."
+  }
+}
