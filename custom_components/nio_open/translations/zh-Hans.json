@@ -1,0 +1,202 @@
+{
+  "entity": {
+    "sensor": {
+      "soc_status_soc": {
+        "name": "电量"
+      },
+      "soc_status_remaining_range": {
+        "name": "剩余续航里程"
+      },
+      "soc_status_chrg_state": {
+        "name": "充电状态"
+      },
+      "soc_status_chrg_final_soc": {
+        "name": "充电目标电量"
+      },
+      "soc_status_max_soc": {
+        "name": "最大电量限制"
+      },
+      "soc_status_dump_enrgy": {
+        "name": "放电能量"
+      },
+      "soc_status_hivolt_btry_curnt": {
+        "name": "电池电流"
+      },
+      "soc_status_sin_btry_hist_temp": {
+        "name": "最高电芯温度"
+      },
+      "soc_status_sin_btry_lwst_temp": {
+        "name": "最低电芯温度"
+      },
+      "soc_status_soc_v2lstatus": {
+        "name": "V2L 状态"
+      },
+      "vehicle_status_speed": {
+        "name": "车速"
+      },
+      "vehicle_status_mileage": {
+        "name": "里程表"
+      },
+      "vehicle_status_vehl_state": {
+        "name": "车辆状态"
+      },
+      "vehicle_status_chrg_state": {
+        "name": "车辆充电状态"
+      },
+      "vehicle_status_oprtn_mode": {
+        "name": "运行模式"
+      },
+      "vehicle_status_vehl_totl_volt": {
+        "name": "电池电压"
+      },
+      "vehicle_status_vehl_totl_curnt": {
+        "name": "车辆电流"
+      },
+      "vehicle_status_gear": {
+        "name": "挡位"
+      },
+      "position_status_heading": {
+        "name": "航向角"
+      },
+      "hvac_status_amb_temp_c": {
+        "name": "环境温度"
+      },
+      "hvac_status_outside_temp_c": {
+        "name": "车外温度"
+      },
+      "hvac_status_pm2p5cabin": {
+        "name": "车内 PM2.5"
+      },
+      "fridge_status_fridge_set_temp": {
+        "name": "冰箱设定温度"
+      },
+      "fridge_status_fridge_mod_sts": {
+        "name": "冰箱模式"
+      },
+      "extremum_data_highest_temp": {
+        "name": "最高电池温度"
+      },
+      "extremum_data_lowest_temp": {
+        "name": "最低电池温度"
+      },
+      "extremum_data_sin_btry_hist_volt": {
+        "name": "最高电芯电压"
+      },
+      "extremum_data_sin_btry_lwst_volt": {
+        "name": "最低电芯电压"
+      },
+      "driving_data_vcu_drvg_mod": {
+        "name": "驾驶模式"
+      },
+      "driving_data_average_speed": {
+        "name": "平均车速"
+      },
+      "driving_data_aclrtn_pedal_posn": {
+        "name": "加速踏板"
+      },
+      "trip_status_trip_odometer": {
+        "name": "本次行程里程"
+      },
+      "trip_status_trip_eng": {
+        "name": "本次行程能耗"
+      },
+      "heating_status_steer_wheel_heat_sts": {
+        "name": "方向盘加热"
+      },
+      "heating_status_hv_batt_pre_sts": {
+        "name": "电池预热"
+      },
+      "heating_status_seat_heat_frnt_le_sts": {
+        "name": "左前排座椅加热"
+      },
+      "heating_status_seat_heat_frnt_ri_sts": {
+        "name": "右前排座椅加热"
+      },
+      "heating_status_seat_heat_re_le_sts": {
+        "name": "左后排座椅加热"
+      },
+      "heating_status_seat_heat_re_ri_sts": {
+        "name": "右后排座椅加热"
+      },
+      "heating_status_seat_vent_frnt_le_sts": {
+        "name": "左前排座椅通风"
+      },
+      "heating_status_seat_vent_frnt_ri_sts": {
+        "name": "右前排座椅通风"
+      },
+      "heating_status_seat_vent_re_le_sts": {
+        "name": "左后排座椅通风"
+      },
+      "heating_status_seat_vent_re_ri_sts": {
+        "name": "右后排座椅通风"
+      },
+      "window_status_window_positions_win_frnt_le_posn": {
+        "name": "左前车窗位置"
+      },
+      "window_status_window_positions_win_frnt_ri_posn": {
+        "name": "右前车窗位置"
+      },
+      "window_status_window_positions_win_re_le_posn": {
+        "name": "左后车窗位置"
+      },
+      "window_status_window_positions_win_re_ri_posn": {
+        "name": "右后车窗位置"
+      }
+    },
+    "binary_sensor": {
+      "door_status_door_ajars_door_ajar_frnt_le_sts": {
+        "name": "左前车门"
+      },
+      "door_status_door_ajars_door_ajar_frnt_ri_sts": {
+        "name": "右前车门"
+      },
+      "door_status_door_ajars_door_ajar_re_le_sts": {
+        "name": "左后车门"
+      },
+      "door_status_door_ajars_door_ajar_re_ri_sts": {
+        "name": "右后车门"
+      },
+      "door_status_door_locks_door_lock_frnt_le_sts": {
+        "name": "左前车门锁"
+      },
+      "door_status_door_locks_door_lock_frnt_ri_sts": {
+        "name": "右前车门锁"
+      },
+      "door_status_tailgate_status_ajar_status": {
+        "name": "尾门"
+      },
+      "door_status_engine_hood_status_ajar_status": {
+        "name": "前舱盖"
+      },
+      "door_status_vehicle_lock_status": {
+        "name": "车辆锁"
+      },
+      "light_status_lo_beam_on": {
+        "name": "近光灯"
+      },
+      "light_status_head_light_on": {
+        "name": "大灯"
+      },
+      "light_status_hi_beam_on": {
+        "name": "远光灯"
+      },
+      "hvac_status_air_con_on": {
+        "name": "空调"
+      },
+      "hvac_status_pm2p5filter_active": {
+        "name": "PM2.5 滤芯"
+      },
+      "vehicle_status_urgt_prw_shtdwn": {
+        "name": "紧急断电"
+      },
+      "door_status_charge_port": {
+        "name": "充电口"
+      }
+    },
+    "device_tracker": {
+      "position": {
+        "name": "位置"
+      }
+    }
+  }
+}

@@ -59,3 +59,10 @@ ENDPOINTS: Final[dict[str, Endpoint]] = {
     "trip_status": Endpoint("trip_status/changes", slow=True),
     "alarm_signal": Endpoint("alarm_signal/changes", slow=True),
 }
+
+# NIO sends 0 for these temperatures when the vehicle has not sampled them, so
+# a 0 is treated as missing and the last real reading is kept.
+PLACEHOLDER_ZERO_FIELDS: Final[dict[str, frozenset[str]]] = {
+    "hvac_status": frozenset({"amb_temp_c", "outside_temp_c"}),
+    "fridge_status": frozenset({"fridge_set_temp"}),
+}

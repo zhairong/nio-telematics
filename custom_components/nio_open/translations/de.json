@@ -1,0 +1,202 @@
+{
+  "entity": {
+    "sensor": {
+      "soc_status_soc": {
+        "name": "Akkustand"
+      },
+      "soc_status_remaining_range": {
+        "name": "Restreichweite"
+      },
+      "soc_status_chrg_state": {
+        "name": "Ladezustand"
+      },
+      "soc_status_chrg_final_soc": {
+        "name": "Ladeziel"
+      },
+      "soc_status_max_soc": {
+        "name": "Maximale Ladegrenze"
+      },
+      "soc_status_dump_enrgy": {
+        "name": "Entladene Energie"
+      },
+      "soc_status_hivolt_btry_curnt": {
+        "name": "Batteriestrom"
+      },
+      "soc_status_sin_btry_hist_temp": {
+        "name": "Höchste Zelltemperatur"
+      },
+      "soc_status_sin_btry_lwst_temp": {
+        "name": "Niedrigste Zelltemperatur"
+      },
+      "soc_status_soc_v2lstatus": {
+        "name": "V2L-Status"
+      },
+      "vehicle_status_speed": {
+        "name": "Geschwindigkeit"
+      },
+      "vehicle_status_mileage": {
+        "name": "Kilometerstand"
+      },
+      "vehicle_status_vehl_state": {
+        "name": "Fahrzeugstatus"
+      },
+      "vehicle_status_chrg_state": {
+        "name": "Fahrzeug-Ladezustand"
+      },
+      "vehicle_status_oprtn_mode": {
+        "name": "Betriebsmodus"
+      },
+      "vehicle_status_vehl_totl_volt": {
+        "name": "Batteriespannung"
+      },
+      "vehicle_status_vehl_totl_curnt": {
+        "name": "Fahrzeugstrom"
+      },
+      "vehicle_status_gear": {
+        "name": "Gang"
+      },
+      "position_status_heading": {
+        "name": "Fahrtrichtung"
+      },
+      "hvac_status_amb_temp_c": {
+        "name": "Umgebungstemperatur"
+      },
+      "hvac_status_outside_temp_c": {
+        "name": "Außentemperatur"
+      },
+      "hvac_status_pm2p5cabin": {
+        "name": "Innenraum-Feinstaub (PM2,5)"
+      },
+      "fridge_status_fridge_set_temp": {
+        "name": "Kühlschrank-Solltemperatur"
+      },
+      "fridge_status_fridge_mod_sts": {
+        "name": "Kühlschrankmodus"
+      },
+      "extremum_data_highest_temp": {
+        "name": "Höchste Batterietemperatur"
+      },
+      "extremum_data_lowest_temp": {
+        "name": "Niedrigste Batterietemperatur"
+      },
+      "extremum_data_sin_btry_hist_volt": {
+        "name": "Höchste Zellspannung"
+      },
+      "extremum_data_sin_btry_lwst_volt": {
+        "name": "Niedrigste Zellspannung"
+      },
+      "driving_data_vcu_drvg_mod": {
+        "name": "Fahrmodus"
+      },
+      "driving_data_average_speed": {
+        "name": "Durchschnittsgeschwindigkeit"
+      },
+      "driving_data_aclrtn_pedal_posn": {
+        "name": "Fahrpedal"
+      },
+      "trip_status_trip_odometer": {
+        "name": "Fahrtstrecke"
+      },
+      "trip_status_trip_eng": {
+        "name": "Fahrtenergie"
+      },
+      "heating_status_steer_wheel_heat_sts": {
+        "name": "Lenkradheizung"
+      },
+      "heating_status_hv_batt_pre_sts": {
+        "name": "Batterievorheizung"
+      },
+      "heating_status_seat_heat_frnt_le_sts": {
+        "name": "Sitzheizung vorne links"
+      },
+      "heating_status_seat_heat_frnt_ri_sts": {
+        "name": "Sitzheizung vorne rechts"
+      },
+      "heating_status_seat_heat_re_le_sts": {
+        "name": "Sitzheizung hinten links"
+      },
+      "heating_status_seat_heat_re_ri_sts": {
+        "name": "Sitzheizung hinten rechts"
+      },
+      "heating_status_seat_vent_frnt_le_sts": {
+        "name": "Sitzbelüftung vorne links"
+      },
+      "heating_status_seat_vent_frnt_ri_sts": {
+        "name": "Sitzbelüftung vorne rechts"
+      },
+      "heating_status_seat_vent_re_le_sts": {
+        "name": "Sitzbelüftung hinten links"
+      },
+      "heating_status_seat_vent_re_ri_sts": {
+        "name": "Sitzbelüftung hinten rechts"
+      },
+      "window_status_window_positions_win_frnt_le_posn": {
+        "name": "Fensterposition vorne links"
+      },
+      "window_status_window_positions_win_frnt_ri_posn": {
+        "name": "Fensterposition vorne rechts"
+      },
+      "window_status_window_positions_win_re_le_posn": {
+        "name": "Fensterposition hinten links"
+      },
+      "window_status_window_positions_win_re_ri_posn": {
+        "name": "Fensterposition hinten rechts"
+      }
+    },
+    "binary_sensor": {
+      "door_status_door_ajars_door_ajar_frnt_le_sts": {
+        "name": "Tür vorne links"
+      },
+      "door_status_door_ajars_door_ajar_frnt_ri_sts": {
+        "name": "Tür vorne rechts"
+      },
+      "door_status_door_ajars_door_ajar_re_le_sts": {
+        "name": "Tür hinten links"
+      },
+      "door_status_door_ajars_door_ajar_re_ri_sts": {
+        "name": "Tür hinten rechts"
+      },
+      "door_status_door_locks_door_lock_frnt_le_sts": {
+        "name": "Türschloss vorne links"
+      },
+      "door_status_door_locks_door_lock_frnt_ri_sts": {
+        "name": "Türschloss vorne rechts"
+      },
+      "door_status_tailgate_status_ajar_status": {
+        "name": "Heckklappe"
+      },
+      "door_status_engine_hood_status_ajar_status": {
+        "name": "Fronthaube"
+      },
+      "door_status_vehicle_lock_status": {
+        "name": "Fahrzeugverriegelung"
+      },
+      "light_status_lo_beam_on": {
+        "name": "Abblendlicht"
+      },
+      "light_status_head_light_on": {
+        "name": "Scheinwerfer"
+      },
+      "light_status_hi_beam_on": {
+        "name": "Fernlicht"
+      },
+      "hvac_status_air_con_on": {
+        "name": "Klimaanlage"
+      },
+      "hvac_status_pm2p5filter_active": {
+        "name": "PM2,5-Filter"
+      },
+      "vehicle_status_urgt_prw_shtdwn": {
+        "name": "Not-Abschaltung der Stromversorgung"
+      },
+      "door_status_charge_port": {
+        "name": "Ladeanschluss"
+      }
+    },
+    "device_tracker": {
+      "position": {
+        "name": "Standort"
+      }
+    }
+  }
+}

@@ -34,14 +34,19 @@ class NioSensorDescription(SensorEntityDescription):
 
     endpoint: str
     path: str
+    offset: int = 0
 
 
-def _d(endpoint, path, name, *, cls=None, unit=None, state=None, enabled=True):
+def _d(endpoint, path, name, *, cls=None, unit=None, state=None, enabled=True, offset=0):
+    # `name` documents the entity at each call site; the display name itself
+    # comes from `translations/*.json` via `translation_key` (see strings.json).
+    key = f"{endpoint}_{path.replace('.', '_')}"
     return NioSensorDescription(
-        key=f"{endpoint}_{path.replace('.', '_')}",
-        name=name,
+        key=key,
+        translation_key=key,
         endpoint=endpoint,
         path=path,
+        offset=offset,
         device_class=cls,
         native_unit_of_measurement=unit,
         state_class=state,
@@ -70,8 +75,8 @@ SENSORS: tuple[NioSensorDescription, ...] = (
     _d("soc_status", "max_soc", "Maximum SOC limit", unit=PERCENTAGE, state=MEASURE),
     _d("soc_status", "dump_enrgy", "Discharged energy", cls=SensorDeviceClass.ENERGY, unit=UnitOfEnergy.KILO_WATT_HOUR, state=SensorStateClass.TOTAL, enabled=False),
     _d("soc_status", "hivolt_btry_curnt", "Battery current", cls=AMP, unit=UnitOfElectricCurrent.AMPERE, state=MEASURE),
-    _d("soc_status", "sin_btry_hist_temp", "Highest cell temperature", cls=TEMP, unit=CELSIUS, state=MEASURE, enabled=False),
-    _d("soc_status", "sin_btry_lwst_temp", "Lowest cell temperature", cls=TEMP, unit=CELSIUS, state=MEASURE, enabled=False),
+    _d("soc_status", "sin_btry_hist_temp", "Highest cell temperature", cls=TEMP, unit=CELSIUS, state=MEASURE, enabled=False, offset=-40),
+    _d("soc_status", "sin_btry_lwst_temp", "Lowest cell temperature", cls=TEMP, unit=CELSIUS, state=MEASURE, enabled=False, offset=-40),
     _d("soc_status", "soc_v2lstatus", "V2L status", enabled=False),
     _d("vehicle_status", "speed", "Speed", cls=SensorDeviceClass.SPEED, unit=UnitOfSpeed.KILOMETERS_PER_HOUR, state=MEASURE),
     _d("vehicle_status", "mileage", "Odometer", cls=DIST, unit=UnitOfLength.KILOMETERS, state=SensorStateClass.TOTAL_INCREASING),
@@ -132,4 +137,10 @@ class NioSensor(NioEntity, SensorEntity):
 
     @property
     def native_value(self):
-        return self._value(self.entity_description.path)
+        value = self._value(self.entity_description.path)
+        if not self.entity_description.offset:
+            return value
+        # Offset-encoded values: 0 means unsampled, 0xFE/0xFF are error sentinels.
+        if not isinstance(value, (int, float)) or not 0 < value < 0xFE:
+            return None
+        return value + self.entity_description.offset

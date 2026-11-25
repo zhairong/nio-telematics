@@ -13,7 +13,7 @@ from homeassistant.helpers.config_entry_oauth2_flow import (
 
 from .api import NioApi
 from .const import CONF_VIN, PLATFORMS
-from .coordinator import NioCoordinator
+from .coordinator import NioCoordinator, data_store
 
 type NioConfigEntry = ConfigEntry[NioCoordinator]
 
@@ -27,6 +27,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: NioConfigEntry) -> bool:
 
     api = NioApi(OAuth2Session(hass, entry, implementation), entry.data[CONF_VIN])
     coordinator = NioCoordinator(hass, entry, api)
+    await coordinator.async_restore()
     await coordinator.async_config_entry_first_refresh()
     entry.runtime_data = coordinator
 
@@ -37,3 +38,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: NioConfigEntry) -> bool:
 async def async_unload_entry(hass: HomeAssistant, entry: NioConfigEntry) -> bool:
     """Unload a config entry."""
     return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+
+
+async def async_remove_entry(hass: HomeAssistant, entry: NioConfigEntry) -> None:
+    """Delete the saved vehicle data."""
+    await data_store(hass, entry).async_remove()

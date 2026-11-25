@@ -34,9 +34,12 @@ class NioBinarySensorDescription(BinarySensorEntityDescription):
 
 
 def _d(endpoint, path, name, on_value, cls=None, invert=False, enabled=True):
+    # `name` documents the entity at each call site; the display name itself
+    # comes from `translations/*.json` via `translation_key` (see strings.json).
+    key = f"{endpoint}_{path.replace('.', '_')}"
     return NioBinarySensorDescription(
-        key=f"{endpoint}_{path.replace('.', '_')}",
-        name=name,
+        key=key,
+        translation_key=key,
         endpoint=endpoint,
         path=path,
         on_value=on_value,
@@ -108,7 +111,7 @@ class NioBinarySensor(NioEntity, BinarySensorEntity):
 class NioChargePortSensor(NioEntity, BinarySensorEntity):
     """Open when any charge port is open."""
 
-    _attr_name = "Charge port"
+    _attr_translation_key = "door_status_charge_port"
     _attr_device_class = BinarySensorDeviceClass.DOOR
 
     def __init__(self, coordinator) -> None:
