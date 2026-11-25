@@ -7,7 +7,9 @@
       "vin": {
         "title": "Vehicle",
         "description": "Enter the VIN of the NIO vehicle to monitor.",
-        "data": { "vin": "VIN" }
+        "data": {
+          "vin": "VIN"
+        }
       },
       "reauth_confirm": {
         "title": "Reauthenticate NIO",
@@ -32,5 +34,205 @@
   },
   "application_credentials": {
     "description": "Use the client ID and secret from the NIO Open Platform (open-eu.nio.com)."
+  },
+  "entity": {
+    "sensor": {
+      "soc_status_soc": {
+        "name": "Battery"
+      },
+      "soc_status_remaining_range": {
+        "name": "Remaining range"
+      },
+      "soc_status_chrg_state": {
+        "name": "Charging state"
+      },
+      "soc_status_chrg_final_soc": {
+        "name": "Charge target"
+      },
+      "soc_status_max_soc": {
+        "name": "Maximum SOC limit"
+      },
+      "soc_status_dump_enrgy": {
+        "name": "Discharged energy"
+      },
+      "soc_status_hivolt_btry_curnt": {
+        "name": "Battery current"
+      },
+      "soc_status_sin_btry_hist_temp": {
+        "name": "Highest cell temperature"
+      },
+      "soc_status_sin_btry_lwst_temp": {
+        "name": "Lowest cell temperature"
+      },
+      "soc_status_soc_v2lstatus": {
+        "name": "V2L status"
+      },
+      "vehicle_status_speed": {
+        "name": "Speed"
+      },
+      "vehicle_status_mileage": {
+        "name": "Odometer"
+      },
+      "vehicle_status_vehl_state": {
+        "name": "Vehicle state"
+      },
+      "vehicle_status_chrg_state": {
+        "name": "Vehicle charging state"
+      },
+      "vehicle_status_oprtn_mode": {
+        "name": "Operation mode"
+      },
+      "vehicle_status_vehl_totl_volt": {
+        "name": "Battery voltage"
+      },
+      "vehicle_status_vehl_totl_curnt": {
+        "name": "Vehicle current"
+      },
+      "vehicle_status_gear": {
+        "name": "Gear"
+      },
+      "position_status_heading": {
+        "name": "Heading"
+      },
+      "hvac_status_amb_temp_c": {
+        "name": "Ambient temperature"
+      },
+      "hvac_status_outside_temp_c": {
+        "name": "Outside temperature"
+      },
+      "hvac_status_pm2p5cabin": {
+        "name": "Cabin PM2.5"
+      },
+      "fridge_status_fridge_set_temp": {
+        "name": "Fridge target temperature"
+      },
+      "fridge_status_fridge_mod_sts": {
+        "name": "Fridge mode"
+      },
+      "extremum_data_highest_temp": {
+        "name": "Highest battery temperature"
+      },
+      "extremum_data_lowest_temp": {
+        "name": "Lowest battery temperature"
+      },
+      "extremum_data_sin_btry_hist_volt": {
+        "name": "Highest cell voltage"
+      },
+      "extremum_data_sin_btry_lwst_volt": {
+        "name": "Lowest cell voltage"
+      },
+      "driving_data_vcu_drvg_mod": {
+        "name": "Driving mode"
+      },
+      "driving_data_average_speed": {
+        "name": "Average speed"
+      },
+      "driving_data_aclrtn_pedal_posn": {
+        "name": "Accelerator pedal"
+      },
+      "trip_status_trip_odometer": {
+        "name": "Trip distance"
+      },
+      "trip_status_trip_eng": {
+        "name": "Trip energy"
+      },
+      "heating_status_steer_wheel_heat_sts": {
+        "name": "Steering wheel heating"
+      },
+      "heating_status_hv_batt_pre_sts": {
+        "name": "Battery preheating"
+      },
+      "heating_status_seat_heat_frnt_le_sts": {
+        "name": "Front left seat heating"
+      },
+      "heating_status_seat_heat_frnt_ri_sts": {
+        "name": "Front right seat heating"
+      },
+      "heating_status_seat_heat_re_le_sts": {
+        "name": "Rear left seat heating"
+      },
+      "heating_status_seat_heat_re_ri_sts": {
+        "name": "Rear right seat heating"
+      },
+      "heating_status_seat_vent_frnt_le_sts": {
+        "name": "Front left seat ventilation"
+      },
+      "heating_status_seat_vent_frnt_ri_sts": {
+        "name": "Front right seat ventilation"
+      },
+      "heating_status_seat_vent_re_le_sts": {
+        "name": "Rear left seat ventilation"
+      },
+      "heating_status_seat_vent_re_ri_sts": {
+        "name": "Rear right seat ventilation"
+      },
+      "window_status_window_positions_win_frnt_le_posn": {
+        "name": "Front left window position"
+      },
+      "window_status_window_positions_win_frnt_ri_posn": {
+        "name": "Front right window position"
+      },
+      "window_status_window_positions_win_re_le_posn": {
+        "name": "Rear left window position"
+      },
+      "window_status_window_positions_win_re_ri_posn": {
+        "name": "Rear right window position"
+      }
+    },
+    "binary_sensor": {
+      "door_status_door_ajars_door_ajar_frnt_le_sts": {
+        "name": "Front left door"
+      },
+      "door_status_door_ajars_door_ajar_frnt_ri_sts": {
+        "name": "Front right door"
+      },
+      "door_status_door_ajars_door_ajar_re_le_sts": {
+        "name": "Rear left door"
+      },
+      "door_status_door_ajars_door_ajar_re_ri_sts": {
+        "name": "Rear right door"
+      },
+      "door_status_door_locks_door_lock_frnt_le_sts": {
+        "name": "Front left door lock"
+      },
+      "door_status_door_locks_door_lock_frnt_ri_sts": {
+        "name": "Front right door lock"
+      },
+      "door_status_tailgate_status_ajar_status": {
+        "name": "Tailgate"
+      },
+      "door_status_engine_hood_status_ajar_status": {
+        "name": "Hood"
+      },
+      "door_status_vehicle_lock_status": {
+        "name": "Vehicle lock"
+      },
+      "light_status_lo_beam_on": {
+        "name": "Low beam"
+      },
+      "light_status_head_light_on": {
+        "name": "Headlight"
+      },
+      "light_status_hi_beam_on": {
+        "name": "High beam"
+      },
+      "hvac_status_air_con_on": {
+        "name": "Air conditioning"
+      },
+      "hvac_status_pm2p5filter_active": {
+        "name": "PM2.5 filter"
+      },
+      "vehicle_status_urgt_prw_shtdwn": {
+        "name": "Emergency power shutdown"
+      },
+      "door_status_charge_port": {
+        "name": "Charge port"
+      }
+    },
+    "device_tracker": {
+      "position": {
+        "name": "Location"
+      }
+    }
   }
 }

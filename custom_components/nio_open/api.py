@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Protocol
 
-from .const import API_BASE_URL, ENDPOINTS
+from .const import API_BASE_URL, ENDPOINTS, PLACEHOLDER_ZERO_FIELDS
 
 AUTH_RESULT_CODES = frozenset(
     {"access_denied", "invalid_token", "unauthorized", "forbidden", "invalid_grant"}
@@ -35,6 +35,14 @@ def merge_records(records: list[dict[str, Any]]) -> dict[str, Any] | None:
     return merged
 
 
+async def _result_code(response: Any) -> Any:
+    try:
+        payload = await response.json(content_type=None)
+    except Exception:  # noqa: BLE001 - response details may contain private data
+        return None
+    return payload.get("result_code") if isinstance(payload, dict) else None
+
+
 class NioApi:
     """Fetch telematics data for one vehicle."""
 
@@ -55,6 +63,9 @@ class NioApi:
 
         if response.status in (401, 403):
             raise NioAuthError(f"HTTP {response.status} from NIO")
+        if response.status == 404 and await _result_code(response) == "resource_not_found":
+            # `*/changes` answers 404 when nothing changed in the window.
+            return None
         if response.status >= 400:
             raise NioApiError(f"HTTP {response.status} from {endpoint}")
 
@@ -71,6 +82,13 @@ class NioApi:
             raise NioApiError(f"NIO rejected {endpoint} request")
 
         data = payload.get("data")
+        placeholders = PLACEHOLDER_ZERO_FIELDS.get(endpoint, frozenset())
+
+        def clean(record: dict[str, Any]) -> dict[str, Any]:
+            return {
+                k: v for k, v in record.items() if not (k in placeholders and v == 0)
+            }
+
         if isinstance(data, list):
-            return merge_records([r for r in data if isinstance(r, dict)])
-        return data if isinstance(data, dict) else None
+            return merge_records([clean(r) for r in data if isinstance(r, dict)])
+        return clean(data) if isinstance(data, dict) else None

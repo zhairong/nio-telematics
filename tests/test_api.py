@@ -114,3 +114,40 @@ async def test_unknown_result_code_is_not_exposed(code):
     with pytest.raises(NioApiError) as exc:
         await NioApi(session, "V").fetch("soc_status")
     assert "SYNTHETIC_SECRET" not in "".join(traceback.format_exception(exc.value))
+
+
+async def test_placeholder_zero_temperatures_are_dropped():
+    # NIO reports 0 for HVAC/fridge temperatures it has not sampled.
+    session = make_session(
+        {
+            "result_code": "success",
+            "data": [
+                {"sample_timestamp": 1, "amb_temp_c": 7.5, "outside_temp_c": 6.0},
+                {"sample_timestamp": 2, "amb_temp_c": 0, "outside_temp_c": 0.0, "pm2p5cabin": 0},
+            ],
+        }
+    )
+    assert await NioApi(session, "V").fetch("hvac_status") == {
+        "sample_timestamp": 2,
+        "amb_temp_c": 7.5,
+        "outside_temp_c": 6.0,
+        "pm2p5cabin": 0,
+    }
+
+
+async def test_placeholder_zero_fridge_temperature_is_dropped():
+    session = make_session(
+        {"result_code": "success", "data": [{"sample_timestamp": 1, "fridge_set_temp": 0}]}
+    )
+    assert await NioApi(session, "V").fetch("fridge_status") == {"sample_timestamp": 1}
+
+
+async def test_no_recent_changes_is_none():
+    session = make_session({"result_code": "resource_not_found"}, 404)
+    assert await NioApi(session, "V").fetch("soc_status") is None
+
+
+async def test_other_404_raises_api_error():
+    session = make_session({"result_code": "not_found_other"}, 404)
+    with pytest.raises(NioApiError):
+        await NioApi(session, "V").fetch("soc_status")

@@ -20,7 +20,7 @@ async def async_setup_entry(
 class NioTracker(NioEntity, TrackerEntity):
     """GPS position of the vehicle."""
 
-    _attr_name = "Location"
+    _attr_translation_key = "position"
 
     def __init__(self, coordinator) -> None:
         super().__init__(coordinator, "position_status", "position")

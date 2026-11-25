@@ -1,8 +1,10 @@
 # NIO Open Platform for Home Assistant
 
+English | [中文](README.zh-CN.md)
+
 Read-only Home Assistant integration that shows your NIO vehicle via the [NIO EU Open Platform](https://open-eu.nio.com/).
 
-Repository: [zhairong/nio-telematics](https://github.com/zhairong/nio-telematics). This repository is currently private. Its layout is prepared for HACS, but standard HACS installation requires a public repository; use the manual installation below until it is made public.
+Repository: [zhairong/nio-telematics](https://github.com/zhairong/nio-telematics) (public, MIT licensed, HACS-ready).
 
 ## Entities
 - **Sensors**: battery %, range, charging state, speed, odometer, temperatures, battery/cell data, window positions, seat heating/ventilation, fridge, trip, driving mode, …
@@ -11,16 +13,18 @@ Repository: [zhairong/nio-telematics](https://github.com/zhairong/nio-telematics
 
 Many diagnostic entities are disabled by default; enable them in the entity registry.
 Polling: every 60 s for core data (battery, vehicle status, position, doors); other endpoints every 5 minutes.
+Entity names are translated into English, Simplified Chinese, and German, and follow each user's Home Assistant language setting automatically.
 
 ## Installation
 
-### Manual installation (private repository)
-1. With an account that has repository access, download the reviewed integration branch or merged default branch.
+### HACS (recommended)
+HACS → ⋮ → **Custom repositories** → add `https://github.com/zhairong/nio-telematics`, category **Integration** → install → restart Home Assistant.
+(This repository is not yet in the default HACS store, so it must be added as a custom repository.)
+
+### Manual installation
+1. Download this repository (e.g. `git clone` or download the ZIP of the `main` branch).
 2. Copy `custom_components/nio_open` into `<your-ha-config>/custom_components/nio_open`.
 3. Restart Home Assistant, then follow the setup below. Do not copy credentials or your Home Assistant configuration into this repository.
-
-### HACS (after the repository becomes public)
-HACS → ⋮ → **Custom repositories** → add `https://github.com/zhairong/nio-telematics`, category **Integration**, then install and restart Home Assistant. The current private repository is not a standard HACS installation source and is not listed in the default HACS store.
 
 ## Setup
 1. In the NIO Open Platform console, register these redirect URIs on your application:
@@ -30,6 +34,9 @@ HACS → ⋮ → **Custom repositories** → add `https://github.com/zhairong/ni
 
 ## Notes
 - Requested scopes: `vehicle:read` plus dynamics, location, energy, body, cabin, powertrain and diagnostics (`:read`). `vehicle:connectivity:read` and `aftersales:read` are not requested because NIO rejects the whole authorization with `invalid_scope` when they are included.
+- NIO reports `0` for ambient/outside/fridge temperatures it has not sampled; these are treated as missing (the last real reading is kept, otherwise the sensor is `unknown`). Change endpoints only serve the last 60 minutes, so these sensors refresh only while the vehicle is in use.
+- NIO only returns data that changed recently, so a parked car reports nothing new. The last known values are saved in Home Assistant's `.storage` (including position) and restored after a restart; they are deleted when the integration is removed.
+- The Open Platform only exposes `position_status/changes`; there is no "latest position" endpoint. NIO only emits a position record when the vehicle's location actually changes, so the device tracker stays `unknown` while the car is parked, even with good GPS reception — this matches what the NIO app shows via its own private API, which this integration cannot access. A position appears once the vehicle is driven again.
 - Personal NIO applications cannot use `client_credentials`; the authorization-code flow is required.
 - Do not run this alongside another NIO integration using the same application unless you want to share NIO's rate limit.
 

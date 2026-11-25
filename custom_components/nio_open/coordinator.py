@@ -9,12 +9,19 @@ from typing import Any
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.helpers.storage import Store
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import NioApi, NioAuthError
 from .const import DOMAIN, ENDPOINTS, SCAN_INTERVAL, SLOW_EVERY_N_CYCLES
 
 _LOGGER = logging.getLogger(__name__)
+SAVE_DELAY = 60
+
+
+def data_store(hass: HomeAssistant, entry: ConfigEntry) -> Store[dict[str, Any]]:
+    """Last known values, so a restart while parked still shows them."""
+    return Store(hass, 1, f"{DOMAIN}.{entry.entry_id}")
 
 
 class NioCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
@@ -30,6 +37,12 @@ class NioCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
         )
         self.api = api
         self._cycle = 0
+        self._store = data_store(hass, entry)
+
+    async def async_restore(self) -> None:
+        """Seed data with the values saved before the last restart."""
+        if isinstance(stored := await self._store.async_load(), dict):
+            self.data = stored
 
     async def _async_update_data(self) -> dict[str, dict[str, Any]]:
         names = [
@@ -57,4 +70,5 @@ class NioCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
                 data[name] = {**data.get(name, {}), **result}
         if failures == len(names):
             raise UpdateFailed("All NIO requests failed")
+        self._store.async_delay_save(lambda: data, SAVE_DELAY)
         return data

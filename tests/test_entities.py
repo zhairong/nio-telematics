@@ -143,3 +143,54 @@ async def test_slow_endpoints_polled_every_nth_cycle(hass: HomeAssistant) -> Non
     with patch("custom_components.nio_open.api.NioApi.fetch", side_effect=fetch):
         await entry.runtime_data.async_refresh()
     assert set(calls) == {n for n, e in ENDPOINTS.items() if not e.slow}
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"), [(55, 15), (40, 0), (0, None), (0xFE, None), (0xFF, None), (None, None)]
+)
+def test_cell_temperature_offset(raw, expected) -> None:
+    from custom_components.nio_open.sensor import SENSORS, NioSensor
+
+    description = next(d for d in SENSORS if d.path == "sin_btry_hist_temp")
+    sensor = NioSensor.__new__(NioSensor)
+    sensor.entity_description = description
+    sensor._endpoint = description.endpoint
+    sensor.coordinator = MagicMock(data={"soc_status": {"sin_btry_hist_temp": raw}})
+    assert sensor.native_value == expected
+
+
+async def test_last_data_survives_restart_while_parked(hass: HomeAssistant, hass_storage) -> None:
+    entry = make_entry()
+    hass_storage[f"{DOMAIN}.{entry.entry_id}"] = {
+        "version": 1,
+        "key": f"{DOMAIN}.{entry.entry_id}",
+        "data": {"soc_status": {"soc": 61.0}},
+    }
+
+    async def fetch(name):
+        # Parked: change endpoints have nothing new, only the snapshot answers.
+        return DATA["vehicle_status"] if name == "vehicle_status" else None
+
+    entry.add_to_hass(hass)
+    with (
+        patch("custom_components.nio_open.async_get_config_entry_implementation"),
+        patch("custom_components.nio_open.OAuth2Session", MagicMock()),
+        patch("custom_components.nio_open.api.NioApi.fetch", side_effect=fetch),
+    ):
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+    assert entry.state is ConfigEntryState.LOADED
+    assert hass.states.get("sensor.nio_123456_battery").state == "61.0"
+
+
+async def test_data_is_saved_for_next_restart(hass: HomeAssistant, hass_storage) -> None:
+    from datetime import timedelta
+
+    from homeassistant.util import dt as dt_util
+    from pytest_homeassistant_custom_component.common import async_fire_time_changed
+
+    entry = await setup(hass, fetch_ok)
+    async_fire_time_changed(hass, dt_util.utcnow() + timedelta(minutes=5))
+    await hass.async_block_till_done()
+    stored = hass_storage[f"{DOMAIN}.{entry.entry_id}"]["data"]
+    assert stored["soc_status"]["soc"] == 76.5
